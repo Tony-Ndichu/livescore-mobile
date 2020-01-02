@@ -31,7 +31,7 @@
       </div>
 
       <div class="favorite">
-        <font-awesome-icon :icon="['far', 'star']" />
+        <i class="far fa-star" />
       </div>
     </div>
   </div>
@@ -127,6 +127,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #00A54F;
 }
 .game-live {
     display: flex;

@@ -21,11 +21,11 @@ module.exports = {
   ],
   output: {
     path: BUILD_DIR,
-    publicPath: '//localhost:3000/',
+    publicPath: 'http://0.0.0.0:8080/',
     filename: 'bundle.js',
   },
   devServer: {
-    port: 3000,
+    port: 8080,
     hot: true,
     open: true,
     historyApiFallback: true,

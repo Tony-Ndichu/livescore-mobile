@@ -81,7 +81,7 @@ export default {
     right: false,
     tabs: 7,
     items: [
-      'MATCH INFO', 'STATS', 'Deserts', 'Cocktails',
+      'MATCH INFO', 'STATS', 'Deserts', 'Cocktails', 'OTHER'
     ],
   }),
 };

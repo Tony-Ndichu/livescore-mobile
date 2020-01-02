@@ -175,6 +175,7 @@ export default new Vuex.Store({
       commit('filteringByCategoryId', payload);
     },
     toggleCalendar: ({ commit }) => {
+      console.log('toggling calendar==========>');
       commit('toggleCalendar');
     },
   },

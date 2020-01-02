@@ -9,7 +9,6 @@
         ref="dialog"
         v-model="calendarState"
         :return-value.sync="date"
-        persistent
         width="290px"
       >
         <v-date-picker
@@ -46,12 +45,16 @@ export default {
   data: () => ({
     date: new Date().toISOString().substr(0, 10),
     menu: false,
-    modal: false,
     menu2: false,
   }),
   computed: {
-    calendarState() {
-      return this.$store.getters.getCalendarState;
+    calendarState: {
+      get() {
+        return this.$store.getters.getCalendarState;
+      },
+      set() {
+        this.$store.dispatch('toggleCalendar');
+      },
     },
     minDate() {
       const dateObj = new Date();
@@ -66,6 +69,9 @@ export default {
   watch: {
     date(val) {
       this.$store.dispatch('setCurrentDate', val);
+    },
+    calendarState(val) {
+      console.log('the value of calendar state is changing====>', val);
     },
   },
   methods: {

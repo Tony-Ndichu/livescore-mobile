@@ -16,8 +16,6 @@
         <div class="date-numeric">
           <span>{{ day.dayNumeric }} {{ day.month }}</span>
         </div>
-
-        <!-- <div class="calendar" v-if="day.name === 'calendar'">Trr</div> -->
       </div>
 
       <div
@@ -25,7 +23,7 @@
         id="date-picker"
         v-focusOnToday
         class="single-day"
-        @click="toggleCalendar()"
+        @click="toggleCalendar"
       >
         <div class="date-title">
           DATES
@@ -43,23 +41,12 @@
 <script>
 import { FocusOnToday } from '../directives';
 import { addLeadingZero } from '../utils';
-import Calendar from './Calendar.vue';
 
 export default {
   name: 'Days',
-  components: {
-    Calendar,
-  },
   directives: {
     FocusOnToday,
   },
-  //   directives: {
-  //     focus: {
-  //       inserted(el) {
-  //         el.style.position = 'fixed';
-  //       },
-  //     },
-  //   },
   data: () => ({
     days: [],
   }),
@@ -104,6 +91,13 @@ export default {
       this.$store.dispatch('toggleCalendar');
     },
   },
+  watch: {
+        // prevents bug where the calendar shows automatically when coming from single game view
+    $route(to, from) {
+      console.log('to====>', to);
+      console.log('from=====>', from);
+    },
+  }
 };
 </script>
 
