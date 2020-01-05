@@ -4,14 +4,19 @@
       v-for="(game, index) in gamesInTournament"
       :key="index"
       class="game-details"
-      @click="openSingleGame(game.match_id)"
     >
-      <div :class="game.status === 'finished' ? 'game-status' : game.status === 'live' ? 'game-live' : null">
+      <div
+        :class="game.status === 'finished' ? 'game-status' : game.status === 'live' ? 'game-live' : null"
+        @click="openSingleGame(game.match_id)"
+      >
         {{ game.status === 'finished' ? 'FT' : game.status === 'live' ? 'LIVE' : null }}
       </div>
       <!-- <div class="game-live" v-else>LIVE</div> -->
 
-      <div class="team-details">
+      <div
+        class="team-details"
+        @click="openSingleGame(game.match_id)"
+      >
         <div class="team-card">
           <div class="team-score">
             {{ "team_1_score" in game ? game.team_1_score : '?' }}
@@ -30,7 +35,10 @@
         </div>
       </div>
 
-      <div class="favorite">
+      <div
+        class="favorite"
+        @click="favoriteGame(game.match_id)"
+      >
         <i class="far fa-star" />
       </div>
     </div>
@@ -47,6 +55,9 @@ export default {
   methods: {
     openSingleGame(match_id) {
       this.$router.push(`/match/${match_id}`);
+    },
+    favoriteGame(match_id) {
+      console.log('favorite====>', match_id);
     },
   },
 };

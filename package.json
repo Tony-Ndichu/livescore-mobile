@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open --hot --mode development --host 0.0.0.0",
+    "start": "webpack-dev-server --open --hot --mode development",
     "build": "webpack -p --mode=production"
   },
   "keywords": [],
@@ -63,6 +63,7 @@
     "vue-sticky-js": "0.0.4",
     "vuetify": "^2.1.15",
     "vuetify-loader": "^1.4.3",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.2",
+    "vuex-persist": "^2.2.0"
   }
 }

@@ -66,7 +66,7 @@ export default {
     border-radius: 5px;
     margin-right: 5px;
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
-    background-color: #f0f1f2;
+    background-color: white;
     font-size: 12px;
     display: flex;
     align-items: center;

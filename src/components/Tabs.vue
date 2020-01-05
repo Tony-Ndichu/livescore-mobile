@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="tabs">
     <v-app id="inspire">
       <div>
         <v-row
@@ -7,6 +7,7 @@
         />
 
         <v-tabs
+          id="scrolling-techniques-2"
           v-model="tab"
           background-color="#00A54F"
           class="elevation-2"
@@ -33,7 +34,7 @@
             </v-icon>
           </v-tab>
 
-          <v-tab-item>
+          <!-- <v-tab-item>
             <v-card
               flat
               tile
@@ -52,7 +53,7 @@
             >
               <v-card-text />
             </v-card>
-          </v-tab-item>
+          </v-tab-item> -->
         </v-tabs>
       </div>
     </v-app>
@@ -81,7 +82,7 @@ export default {
     right: false,
     tabs: 7,
     items: [
-      'MATCH INFO', 'STATS', 'Deserts', 'Cocktails', 'OTHER'
+      'MATCH INFO', 'STATISTICS', 'LINE-UP', 'OTHER',
     ],
   }),
 };

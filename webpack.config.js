@@ -21,7 +21,7 @@ module.exports = {
   ],
   output: {
     path: BUILD_DIR,
-    publicPath: 'http://0.0.0.0:8080/',
+    publicPath: 'http://localhost:8080/',
     filename: 'bundle.js',
   },
   devServer: {

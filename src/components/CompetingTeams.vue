@@ -78,8 +78,8 @@ export default {
 }
 
 .team-name {
-    width: 20%;
-    text-align: center;
+    width: 10%;
+    font-weight: bold;
 }
 
 .scores {

@@ -89,7 +89,6 @@ export const groupByTournament = (games) => {
 };
 
 export const groupByTournamentName = (games) => {
-  console.log('working');
   const result = games.reduce((r, a) => {
     r[a.tournament_name] = r[a.tournament_name] || [];
     r[a.tournament_name].push(a.tournament_name);
@@ -97,7 +96,7 @@ export const groupByTournamentName = (games) => {
     return r;
   }, Object.create(null));
   return result;
-}
+};
 
 export const groupByCategory = (games) => {
   const result = games.reduce((r, a) => {
@@ -162,5 +161,14 @@ export const manuallyGetIsoCode = (countryName) => {
 
 export const filterByCategoryId = (gameId, gameArray) => {
   const newGameArray = gameArray.filter((el) => el.category_betradar_id == gameId);
+  return newGameArray;
+};
+
+export const filterByTournamentId = (gameId, gameArray) => {
+  console.log('grrrr====>');
+  console.log('gameId====>', gameId);
+  console.log('gameArray=====>', gameArray);
+  const newGameArray = gameArray.filter((el) => el.tournament_betradar_id == gameId);
+  console.log('new array====>', newGameArray);
   return newGameArray;
 };

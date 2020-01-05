@@ -82,6 +82,7 @@ export default {
   },
   mounted() {
     // this.$store.dispatch('setCategoryId', 0);
+    console.log('this.$route=====>', this.$route.name);
   },
   methods: {
     findAlphaCode(countryName) {
@@ -92,6 +93,10 @@ export default {
     },
     sortByCategory(categoryBetradarId) {
       // if the categoryId is 0 (default for "all"), simply fetch all games for the sport rather than filter by category
+
+      if (this.$route.name !== 'home' || this.$route.name !== 'live') {
+        this.$router.push('/');
+      }
       if (categoryBetradarId == 0) {
         this.$store.dispatch('setFilteringByCategoryId', false);
         this.$store.dispatch('setCategoryId', 0);
@@ -129,7 +134,6 @@ export default {
 .categories-container {
     display: flex;
     flex-direction: column;
-    padding-top: 30px;
 }
 
 .no-categories {

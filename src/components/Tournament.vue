@@ -40,7 +40,7 @@ export default {
 <style scoped>
 .games-wrapper {
     width: 100%;
-    background-color: #E6E7E9;
+    background-color: white;
     padding-bottom: 300px;
 }
 

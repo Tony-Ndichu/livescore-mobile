@@ -110,14 +110,14 @@ scrollbar-width: none;
 }
 
 .active {
-  border-bottom: 2px solid white !important;
+  border-bottom: 2px solid #FFF102 !important;
 }
 .active .title {
-    /* color: #FFF102; */
+    color: #FFF102;
 }
 
 .active .numeric {
-    /* color: #018d3c; */
+    color: #FFF102;
     /* background-color: #FFF102; */
 }
 
@@ -131,6 +131,7 @@ scrollbar-width: none;
     cursor: pointer;
     border-bottom: 2px solid #2D2F92;
     font-weight: bold;
+    color: #FFF102 !important;
 }
 
 .calendar {

@@ -2,7 +2,10 @@
   <div>
     <div>
       <Banner />
-      <div id="sticky">
+      <div
+        v-if="$route.path !== '/match'"
+        id="sticky"
+      >
         <Days v-if="$route.path !== '/live'" />
         <ListOfSports />
       </div>
@@ -125,7 +128,7 @@ export default {
 
 <style scoped>
 #sticky {
-    background-color: #E6E7E9;
+    background-color: white;
     width: 100%;
 }
 

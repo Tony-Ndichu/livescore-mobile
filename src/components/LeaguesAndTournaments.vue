@@ -11,6 +11,7 @@
         v-for="(tournament, index) in tournamentNames"
         :key="index"
         class="tournament-name"
+        @click="sortByTournament(index)"
       >
         {{ tournament[0] }}
       </div>
@@ -23,6 +24,24 @@ export default {
   name: 'LeaguesAndTournaments',
   props: ['tournamentNames'],
   mounted() {
+  },
+  methods: {
+    sortByTournament(tournamentBetradarId) {
+      // if the categoryId is 0 (default for "all"), simply fetch all games for the sport rather than filter by category
+
+      if (this.$route.name !== 'home' || this.$route.name !== 'live') {
+        this.$router.push('/');
+      }
+      if (tournamentBetradarId == 0) {
+        this.$store.dispatch('setFilteringByTournamentId', false);
+        this.$store.dispatch('setTournamentId', 0);
+        this.$store.dispatch('getGamesForSingleSport');
+      } else {
+        this.$store.dispatch('setSortingByTournament', { tournamentId: tournamentBetradarId, isTrue: true });
+      }
+
+      setTimeout(() => { this.$store.dispatch('toggleSideMenu'); }, 150);
+    },
   },
 };
 </script>

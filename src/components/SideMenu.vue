@@ -97,7 +97,7 @@ export default {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: #E6E7E9;
+    background-color: white;
     box-shadow: 0 -3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
     overflow: auto;
     z-index: 5;
@@ -108,11 +108,10 @@ export default {
     position: fixed;
     width: 70%;
     text-align: right;
-    background-color:#FFF102;
     font-size: 20px;
     right: 0;
     padding-bottom: 10px;
-    z-index: 5;
+    z-index: 10;
 }
 
 .close-icon {

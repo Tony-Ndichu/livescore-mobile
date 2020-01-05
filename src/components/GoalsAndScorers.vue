@@ -1,5 +1,8 @@
 <template>
-  <div class="wrapper">
+  <div
+    v-if="goalsAndScorers.length != 0"
+    class="wrapper"
+  >
     <div class="font-weight-black">
       Goals
     </div>
@@ -76,7 +79,6 @@ export default {
 .team-one-goals-wrapper {
     display: flex;
     flex-wrap: nowrap;
-    border-bottom: 
 }
 
 

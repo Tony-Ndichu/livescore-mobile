@@ -1,13 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import VuexPersistence from 'vuex-persist';
 import {
-  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, groupByTournamentName,
+  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName,
 } from '../utils';
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+});
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [vuexLocal.plugin],
   state: {
     sports: [], // controls the list of sports displayed
     currentSportId: 1, // controls the filtering of the matches
@@ -20,7 +26,9 @@ export default new Vuex.Store({
     loading: false, // used to show loader depending on whether the api call is complete
     sideMenu: false, // used to control the visibility of the side menu
     filteringByCategoryId: false, // used to control the action 'getGamesForSingleSport' to ensure it filters by category before updating state of 'gamesForSingleSport'
+    filteringByTournamentId: false, // used to control the action 'getGamesForSingleSport' to ensure it filters by tournament before updating state of 'gamesForSingleSport'
     categoryId: 0, // used to determine the category id to be used by the function 'filterByCategoryId' in action 'getGamesForSingleSport'
+    tournamentId: 0, // used to determine the tournament id to be used by the function 'filterbyTournamentId' in action 'getGamesForSingleSport'
     alreadyFetchedCategories: false, // used to ensure categories are not reloaded when clicking between categories of the same game to retain the original categories on the side menu
     tournamentsForSingleSport: [],
     calendar: false, // used to show or hide the calendar
@@ -40,6 +48,7 @@ export default new Vuex.Store({
     getCategoriesForSingleSport: (state) => state.categoriesForSingleSport,
     getAlreadyFetchedCategories: (state) => state.alreadyFetchedCategories,
     getCategoryId: (state) => state.categoryId,
+    getTournamentId: (state) => state.tournamentId,
     getTournamentsForSingleSport: (state) => state.tournamentsForSingleSport,
     getCalendarState: (state) => state.calendar,
     getTournamentNamesForSingleSport: (state) => state.tournamentNamesForSingleSport,
@@ -77,8 +86,14 @@ export default new Vuex.Store({
     filteringByCategoryId(state, payload) {
       state.filteringByCategoryId = payload;
     },
+    filteringByTournamentId(state, payload) {
+      state.filteringByTournamentId = payload;
+    },
     setCategoryId(state, categoryId) {
       state.categoryId = categoryId;
+    },
+    setTournamentId(state, tournamentId) {
+      state.tournamentId = tournamentId;
     },
     alreadyFetchedCategories(state, payload) {
       state.alreadyFetchedCategories = payload;
@@ -113,6 +128,7 @@ export default new Vuex.Store({
         commit('setGamesForSingleSport', []);
         commit('setNoGamesAvailable', true);
       } else if (state.filteringByCategoryId) {
+        // check if user is filtering by category before using the category id to set games for a single sport
         commit('setGamesForSingleSport', filterByCategoryId(state.categoryId, games.data.data));
       } else {
         commit('setGamesForSingleSport', games.data.data);
@@ -164,15 +180,28 @@ export default new Vuex.Store({
       commit('setCategoryId', categoryId);
       dispatch('getGamesForSingleSport');
     },
+    setSortingByTournament: ({ commit, dispatch }, { isTrue, tournamentId }) => {
+      // set 'filteringByCategoryId' to enable the action 'getGamesForSingleSport' to filter by the current categoryId
+      commit('filteringByTournamentId', isTrue);
+      commit('setTournamentId', tournamentId);
+      dispatch('getGamesForSingleSport');
+    },
     setTournamentNamesForSingleSport: ({ commit, state }) => {
       commit('setTournamentNamesForSingleSport', groupByTournamentName(state.gamesForSingleSport));
     },
     setCategoryId: ({ commit }, payload) => {
       commit('setCategoryId', payload);
     },
+    setTournamentId: ({ commit }, payload) => {
+      commit('setTournamentId', payload);
+    },
     setFilteringByCategoryId: ({ commit }, payload) => {
       commit('setCategoryId', 0);
       commit('filteringByCategoryId', payload);
+    },
+    setFilteringByTournamentId: ({ commit }, payload) => {
+      commit('setTournamentId', 0);
+      commit('filteringByTournamentId', payload);
     },
     toggleCalendar: ({ commit }) => {
       console.log('toggling calendar==========>');
