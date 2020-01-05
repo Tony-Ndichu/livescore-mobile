@@ -1,0 +1,14 @@
+$main-bg-color: white;
+@import url('https://fonts.googleapis.com/css?family=Varela+Round&display=swap');
+
+body {
+    background-color: $main-bg-color;
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+    overflow-x: hidden;
+}
+
+
+.v-application--wrap {
+    background-color: white;
+}
