@@ -55,6 +55,12 @@ export default {
     tournamentNames() {
       return this.$store.getters.getTournamentNamesForSingleSport;
     },
+    filteringByCategoryId() {
+      return this.$store.getters.getFilteringByCategoryIdState;
+    },
+    filteringByTournamentId() {
+      return this.$store.getters.getFilteringByTournamentIdState;
+    },
   },
   mounted() {
   },

@@ -29,7 +29,7 @@
 
     <div
       class="menu-icon"
-      @click="findGameCategories()"
+      @click="findGameCategories"
     >
       <font-awesome-icon :icon="['fas', 'bars']" />
     </div>
@@ -44,17 +44,15 @@ export default {
   data: () => ({
     ageLimitImage: over18Logo,
   }),
+  computed: {
+
+  },
   mounted() {
     // document.getElementById('top-header').scrollIntoView();
   },
-  computed: {
-    
-  },
   methods: {
     findGameCategories() {
-      if (!this.alreadyFetchedCategories) {
-        this.$store.dispatch('getCategoriesForSingleSport');
-      }
+      this.$store.dispatch('getCategoriesForSingleSport');
       this.$store.dispatch('setTournamentNamesForSingleSport');
       this.toggleSideMenu();
     },

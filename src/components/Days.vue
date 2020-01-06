@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="day-list">
-      <div
+      <v-card
         v-for="day in days"
         v-if="day.name !== 'calendar'"
         :id="day.isToday ? 'today' : ''"
@@ -16,7 +16,7 @@
         <div class="date-numeric">
           <span>{{ day.dayNumeric }} {{ day.month }}</span>
         </div>
-      </div>
+      </v-card>
 
       <div
         v-else
@@ -134,6 +134,17 @@ scrollbar-width: none;
     color: #FFF102 !important;
 }
 
+.single-day.v-sheet {
+  border-radius: 0 !important;
+}
+
+.single-day.theme--light.v-sheet {
+  border-color: #2D2F92;
+}
+
+.single-dat.v-card {
+  border-radius: 0 !important;
+}
 .calendar {
     align-items: center;
     text-align: center;

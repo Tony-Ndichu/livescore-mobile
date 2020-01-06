@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import VuexPersistence from 'vuex-persist';
 import {
-  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName,
+  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName, groupByTournamentId,
 } from '../utils';
 
 const vuexLocal = new VuexPersistence({
@@ -13,7 +13,7 @@ const vuexLocal = new VuexPersistence({
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [vuexLocal.plugin],
+  // plugins: [vuexLocal.plugin],
   state: {
     sports: [], // controls the list of sports displayed
     currentSportId: 1, // controls the filtering of the matches
@@ -30,9 +30,9 @@ export default new Vuex.Store({
     categoryId: 0, // used to determine the category id to be used by the function 'filterByCategoryId' in action 'getGamesForSingleSport'
     tournamentId: 0, // used to determine the tournament id to be used by the function 'filterbyTournamentId' in action 'getGamesForSingleSport'
     alreadyFetchedCategories: false, // used to ensure categories are not reloaded when clicking between categories of the same game to retain the original categories on the side menu
-    tournamentsForSingleSport: [],
+    alreadyFetchedTournamentNames: false, // used to ensure tournamentNames are not reloaded when clicking between tournamentNames of the same game to retain the original tournamentNames on the side menu
     calendar: false, // used to show or hide the calendar
-    tournamentNamesForSingleSport: [],
+    tournamentNamesForSingleSport: [], // controls the tournament Names shown on the side menu per sport
     singleMatchDetails: [],
   },
   getters: {
@@ -53,6 +53,8 @@ export default new Vuex.Store({
     getCalendarState: (state) => state.calendar,
     getTournamentNamesForSingleSport: (state) => state.tournamentNamesForSingleSport,
     getSingleMatchDetails: (state) => state.singleMatchDetails,
+    getFilteringByCategoryIdState: (state) => state.filteringByCategoryId,
+    getFilteringByTournamentIdState: (state) => state.filteringByTournamentId,
   },
   mutations: {
     setSports(state, sports) {
@@ -81,6 +83,7 @@ export default new Vuex.Store({
       state.sideMenu = !state.sideMenu;
     },
     setCategoriesForSingleSport(state, categoriesForSingleSport) {
+      console.log('categoriesForSingleSport===>', categoriesForSingleSport);
       state.categoriesForSingleSport = categoriesForSingleSport;
     },
     filteringByCategoryId(state, payload) {
@@ -97,6 +100,9 @@ export default new Vuex.Store({
     },
     alreadyFetchedCategories(state, payload) {
       state.alreadyFetchedCategories = payload;
+    },
+    alreadyFetchedTournamentNames(state, payload) {
+      state.alreadyFetchedTournamentNames = payload;
     },
     setTournamentNamesForSingleSport(state, payload) {
       state.tournamentNamesForSingleSport = payload;
@@ -130,6 +136,9 @@ export default new Vuex.Store({
       } else if (state.filteringByCategoryId) {
         // check if user is filtering by category before using the category id to set games for a single sport
         commit('setGamesForSingleSport', filterByCategoryId(state.categoryId, games.data.data));
+      } else if (state.filteringByTournamentId) {
+        // check if user is filtering by tournament before using the tournament id to set games for a single sport
+        commit('setGamesForSingleSport', filterByTournamentId(state.tournamentId, games.data.data));
       } else {
         commit('setGamesForSingleSport', games.data.data);
         commit('setNoGamesAvailable', false);
@@ -148,13 +157,27 @@ export default new Vuex.Store({
       commit('filteringByCategoryId', false);
       commit('setCategoryId', 0);
 
+      // set state of alreadyFetchedTournaments fo false to enable fresh tournament filtering for new sport
+      commit('alreadyFetchedTournamentNames', false);
+      commit('filteringByTournamentId', false);
+      commit('setTournamentId', 0);
+
       commit('setCurrentSport', currentSport);
       dispatch('getGamesForSingleSport');
     },
     setCurrentDate: ({ commit, dispatch }, currentDate) => {
+      commit('setCategoriesForSingleSport', []);
+
+      // set state of alreadyFetchedCategories fo false to enable fresh category filtering for new sport
       commit('filteringByCategoryId', false);
       commit('alreadyFetchedCategories', false);
       commit('setCategoryId', 0);
+
+      // set state of alreadyFetchedTournaments fo false to enable fresh tournament filtering for new sport
+      commit('filteringByTournamentId', false);
+      commit('alreadyFetchedTournamentNames', false);
+      commit('setTournamentId', 0);
+
       commit('setCurrentDate', currentDate);
       dispatch('getGamesForSingleSport');
     },
@@ -171,23 +194,41 @@ export default new Vuex.Store({
       commit('setNoGamesAvailable', true);
     },
     getCategoriesForSingleSport: ({ commit, state }) => {
+      if (!state.alreadyFetchedCategories) {
+        console.log('nope');
+        commit('setCategoriesForSingleSport', groupByCategory(state.gamesForSingleSport));
+      }
+
       commit('alreadyFetchedCategories', true);
-      commit('setCategoriesForSingleSport', groupByCategory(state.gamesForSingleSport));
+    },
+
+    setTournamentNamesForSingleSport: ({ commit, state }) => {
+      if (!state.alreadyFetchedTournamentNames) {
+        commit('setTournamentNamesForSingleSport', groupByTournamentId(state.gamesForSingleSport));
+      }
+
+      commit('alreadyFetchedTournamentNames', true);
     },
     setSortingByCategory: ({ commit, dispatch }, { isTrue, categoryId }) => {
+      // reset sorting by tournament id first
+      commit('setTournamentId', 0);
+      commit('filteringByCategoryId', false);
+
       // set 'filteringByCategoryId' to enable the action 'getGamesForSingleSport' to filter by the current categoryId
+      commit('filteringByTournamentId', false);
       commit('filteringByCategoryId', isTrue);
       commit('setCategoryId', categoryId);
       dispatch('getGamesForSingleSport');
     },
     setSortingByTournament: ({ commit, dispatch }, { isTrue, tournamentId }) => {
-      // set 'filteringByCategoryId' to enable the action 'getGamesForSingleSport' to filter by the current categoryId
+      // reset sorting by category id first
+      commit('setCategoryId', 0);
+      commit('filteringByCategoryId', false);
+
+      // set 'filteringByTournamentId' to enable the action 'getGamesForSingleSport' to filter by the current tournamentId
       commit('filteringByTournamentId', isTrue);
       commit('setTournamentId', tournamentId);
       dispatch('getGamesForSingleSport');
-    },
-    setTournamentNamesForSingleSport: ({ commit, state }) => {
-      commit('setTournamentNamesForSingleSport', groupByTournamentName(state.gamesForSingleSport));
     },
     setCategoryId: ({ commit }, payload) => {
       commit('setCategoryId', payload);

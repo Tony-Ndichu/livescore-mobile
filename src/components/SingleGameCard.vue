@@ -37,7 +37,7 @@
 
       <div
         class="favorite"
-        @click="favoriteGame(game.match_id)"
+        @click="favoriteGame(game)"
       >
         <i class="far fa-star" />
       </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { filterByMatchId } from '../utils';
+
 export default {
   name: 'SingleGameCard',
   props: ['gamesInTournament'],
@@ -56,8 +58,8 @@ export default {
     openSingleGame(match_id) {
       this.$router.push(`/match/${match_id}`);
     },
-    favoriteGame(match_id) {
-      console.log('favorite====>', match_id);
+    favoriteGame(gameDetails) {
+
     },
   },
 };
