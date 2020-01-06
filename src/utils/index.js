@@ -160,15 +160,18 @@ export const manuallyGetIsoCode = (countryName) => {
 };
 
 export const filterByCategoryId = (gameId, gameArray) => {
+  console.log('gameId=====>', gameId);
+  console.log('gameArray====>', gameArray);
   const newGameArray = gameArray.filter((el) => el.category_betradar_id == gameId);
+  console.log('newCragetoryArray====>', newGameArray);
   return newGameArray;
 };
 
 export const filterByTournamentId = (gameId, gameArray) => {
-  console.log('grrrr====>');
-  console.log('gameId====>', gameId);
-  console.log('gameArray=====>', gameArray);
+  // console.log('grrrr====>');
+  // console.log('gameId====>', gameId);
+  // console.log('gameArray=====>', gameArray);
   const newGameArray = gameArray.filter((el) => el.tournament_betradar_id == gameId);
-  console.log('new array====>', newGameArray);
+  // console.log('new array====>', newGameArray);
   return newGameArray;
 };

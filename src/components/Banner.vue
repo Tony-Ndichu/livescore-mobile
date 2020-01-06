@@ -47,6 +47,9 @@ export default {
   mounted() {
     // document.getElementById('top-header').scrollIntoView();
   },
+  computed: {
+    
+  },
   methods: {
     findGameCategories() {
       if (!this.alreadyFetchedCategories) {
