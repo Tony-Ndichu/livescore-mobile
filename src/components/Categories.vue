@@ -83,6 +83,7 @@ export default {
   mounted() {
     // this.$store.dispatch('setCategoryId', 0);
     console.log('this.$route=====>', this.$route.name);
+    console.log('categoriesForSingleSport====>', this.categoriesForSingleSport);
   },
   methods: {
     findAlphaCode(countryName) {

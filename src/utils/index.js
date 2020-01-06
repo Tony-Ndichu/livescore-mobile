@@ -95,8 +95,21 @@ export const groupByTournamentName = (games) => {
     r['0'] = ['All'];
     return r;
   }, Object.create(null));
+  console.log('groupedByTournament====>', result);
   return result;
 };
+
+export const groupByTournamentId = (games) => {
+  const result = games.reduce((r, a) => {
+    r[a.tournament_betradar_id] = r[a.tournament_betradar_id] || [];
+    r[a.tournament_betradar_id].push(a.tournament_name);
+    r['0'] = ['All'];
+    return r;
+  }, Object.create(null));
+  console.log('groupedByTournament====>', result);
+  return result;
+};
+
 
 export const groupByCategory = (games) => {
   const result = games.reduce((r, a) => {
@@ -105,6 +118,7 @@ export const groupByCategory = (games) => {
     r['0'] = ['All'];
     return r;
   }, Object.create(null));
+  console.log('groupedByCategory====>', result);
   return result;
 };
 
@@ -159,16 +173,17 @@ export const manuallyGetIsoCode = (countryName) => {
   return isoCode;
 };
 
-export const filterByCategoryId = (gameId, gameArray) => {
-  const newGameArray = gameArray.filter((el) => el.category_betradar_id == gameId);
+export const filterByCategoryId = (categoryId, gameArray) => {
+  const newGameArray = gameArray.filter((el) => el.category_betradar_id == categoryId);
   return newGameArray;
 };
 
-export const filterByTournamentId = (gameId, gameArray) => {
-  console.log('grrrr====>');
-  console.log('gameId====>', gameId);
-  console.log('gameArray=====>', gameArray);
-  const newGameArray = gameArray.filter((el) => el.tournament_betradar_id == gameId);
-  console.log('new array====>', newGameArray);
+export const filterByTournamentId = (tournamentId, gameArray) => {
+  const newGameArray = gameArray.filter((el) => el.tournament_betradar_id == tournamentId);
+  return newGameArray;
+};
+
+export const filterByMatchId = (matchId, gameArray) => {
+  const newGameArray = gameArray.filter((el) => el.match_id == matchId);
   return newGameArray;
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="sport-list">
-    <div
+    <v-card
       v-for="sport in listOfSports"
       :key="sport.betradar_id"
       :class="currentSportId == sport.betradar_id ? 'single-sport active' : 'single-sport'"
@@ -14,7 +14,7 @@
       <div class="name">
         {{ sport.sport_name }}
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -63,9 +63,9 @@ export default {
 
 .single-sport {
     min-width: 90px;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     margin-right: 5px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.2);
+    /* box-shadow: 0 2px 2px 0 rgba(0,0,0,.2); */
     background-color: white;
     font-size: 12px;
     display: flex;
