@@ -206,7 +206,6 @@ export default new Vuex.Store({
       if (!state.alreadyFetchedTournamentNames) {
         commit('setTournamentNamesForSingleSport', groupByTournamentId(state.gamesForSingleSport));
       }
-
       commit('alreadyFetchedTournamentNames', true);
     },
     setSortingByCategory: ({ commit, dispatch }, { isTrue, categoryId }) => {
