@@ -32,7 +32,6 @@
 
 <script>
 import { groupByTournament } from '../utils';
-
 import Banner from '../components/Banner.vue';
 import Days from '../components/Days.vue';
 import ListOfSports from '../components/ListOfSports.vue';
@@ -79,14 +78,13 @@ export default {
       const groupedByTournament = groupByTournament(newValue);
       const arrayOfGamesPerSport = [];
 
-      for (const key in groupedByTournament) {
-        const value = groupedByTournament[key];
+      Object.keys(groupedByTournament).forEach((key) => {
         arrayOfGamesPerSport.push({
           nameOfTournament: key,
-          gamesInTournament: value,
+          gamesInTournament: groupedByTournament[key],
         });
         this.arrayOfGamesPerSport = arrayOfGamesPerSport;
-      }
+      });
     },
   },
   created() {

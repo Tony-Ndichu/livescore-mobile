@@ -187,3 +187,8 @@ export const filterByMatchId = (matchId, gameArray) => {
   const newGameArray = gameArray.filter((el) => el.match_id == matchId);
   return newGameArray;
 };
+
+export const removeByMatchId = (matchId, oldArray) => {
+  const newGameArray = oldArray.filter((el) => el.match_id != matchId);
+  return newGameArray;
+};

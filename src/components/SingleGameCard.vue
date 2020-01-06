@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { filterByMatchId } from '../utils';
+import { filterByMatchId, removeByMatchId } from '../utils';
 
 export default {
   name: 'SingleGameCard',
@@ -59,7 +59,29 @@ export default {
       this.$router.push(`/match/${match_id}`);
     },
     favoriteGame(gameDetails) {
+      if (localStorage.getItem('favoriteGamesArray') === null) {
+        // if 'favoriteGamesArray' does not exist in localstorage, create it and add the new favorite game
+        const favoriteGamesArray = [];
+        favoriteGamesArray.push(gameDetails);
+        localStorage.setItem('favoriteGamesArray', JSON.stringify(favoriteGamesArray));
+      } else {
+        // else if it exists, parse it from localstorage and check if the game clicked has eveer been favorited before
+        const oldItems = JSON.parse(localStorage.getItem('favoriteGamesArray'));
 
+        const checkIfMatchIsAlreadyFavorited = filterByMatchId(gameDetails.match_id, oldItems);
+
+        if (checkIfMatchIsAlreadyFavorited.length == 0) {
+          // if it has NEVER been favorited, push it to the old array and set the new item to localstorage
+
+          oldItems.push(gameDetails);
+          localStorage.setItem('favoriteGamesArray', JSON.stringify(oldItems));
+        } else {
+          // if item has EVER been favorited , remove it from the array based on its match_id
+
+          const newItems = removeByMatchId(gameDetails.match_id, oldItems);
+          localStorage.setItem('favoriteGamesArray', JSON.stringify(newItems));
+        }
+      }
     },
   },
 };

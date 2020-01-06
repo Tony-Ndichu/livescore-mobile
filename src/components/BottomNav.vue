@@ -52,7 +52,10 @@
     <div
       class="nav-item"
     >
-      <div class="nav-item-icon">
+      <div
+        class="nav-item-icon"
+        @click="viewFavoriteGames()"
+      >
         <font-awesome-icon :icon="['fas', 'star']" />
       </div>
       <div class="nav-item-title">
@@ -97,6 +100,9 @@ export default {
     },
     toggleSideMenu() {
       this.$store.dispatch('toggleSideMenu');
+    },
+    viewFavoriteGames() {
+      this.$router.push('/favorites');
     },
   },
 };
