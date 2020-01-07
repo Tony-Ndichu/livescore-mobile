@@ -11,7 +11,6 @@
       >
         {{ game.status === 'finished' ? 'FT' : game.status === 'live' ? 'LIVE' : null }}
       </div>
-      <!-- <div class="game-live" v-else>LIVE</div> -->
 
       <div
         class="team-details"
@@ -22,7 +21,7 @@
             {{ "team_1_score" in game ? game.team_1_score : '?' }}
           </div>
           <div :class="game.team_1_score > game.team_2_score ? 'team-name bold' : 'team-name'">
-            {{ game.team_1_name }}
+            {{ game.team_1_name }} {{ game.match_id }}
           </div>
         </div>
         <div class="team-card">
@@ -36,10 +35,27 @@
       </div>
 
       <div
+        :ref="`single-game-card-${game.match_id}`"
         class="favorite"
-        @click="favoriteGame(game)"
       >
-        <i class="far fa-star" />
+        <div
+          :ref="`inactive-${game.match_id}`"
+          :class="game.favorited ? 'hide' : 'show'"
+          @click="addFavoriteGame(game)"
+        >
+          <i
+            class="far fa-star"
+          />
+        </div>
+        <div
+          :ref="`active-${game.match_id}`"
+          :class="game.favorited ? 'show' : 'hide'"
+          @click="removeFavoriteGame(game)"
+        >
+          <i
+            class="fas fa-star"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -51,43 +67,65 @@ import { filterByMatchId, removeByMatchId } from '../utils';
 export default {
   name: 'SingleGameCard',
   props: ['gamesInTournament'],
-  mounted() {
-
+  computed: {
+    favoriteGames() {
+      return this.$store.getters.getFavoriteGames;
+    },
   },
   methods: {
-    openSingleGame(match_id) {
-      this.$router.push(`/match/${match_id}`);
+    openSingleGame(matchId) {
+      this.$router.push(`/match/${matchId}`);
     },
-    favoriteGame(gameDetails) {
-      if (localStorage.getItem('favoriteGamesArray') === null) {
-        // if 'favoriteGamesArray' does not exist in localstorage, create it and add the new favorite game
-        const favoriteGamesArray = [];
-        favoriteGamesArray.push(gameDetails);
-        localStorage.setItem('favoriteGamesArray', JSON.stringify(favoriteGamesArray));
-      } else {
-        // else if it exists, parse it from localstorage and check if the game clicked has eveer been favorited before
-        const oldItems = JSON.parse(localStorage.getItem('favoriteGamesArray'));
+    addFavoriteGame(gameDetails) {
+      this.addFavorite(gameDetails);
+      let oldItems = [];
+      oldItems = this.favoriteGames;
 
-        const checkIfMatchIsAlreadyFavorited = filterByMatchId(gameDetails.match_id, oldItems);
+      const checkIfMatchIsAlreadyFavorited = filterByMatchId(gameDetails.match_id, oldItems);
 
-        if (checkIfMatchIsAlreadyFavorited.length == 0) {
-          // if it has NEVER been favorited, push it to the old array and set the new item to localstorage
-
-          oldItems.push(gameDetails);
-          localStorage.setItem('favoriteGamesArray', JSON.stringify(oldItems));
-        } else {
-          // if item has EVER been favorited , remove it from the array based on its match_id
-
-          const newItems = removeByMatchId(gameDetails.match_id, oldItems);
-          localStorage.setItem('favoriteGamesArray', JSON.stringify(newItems));
-        }
+      if (checkIfMatchIsAlreadyFavorited == 0) {
+        oldItems.push(gameDetails);
+        this.$store.dispatch('setFavoriteGames', oldItems);
       }
+    },
+    removeFavoriteGame(gameDetails) {
+      this.removeFavorite(gameDetails);
+      let oldItems = [];
+      oldItems = this.favoriteGames;
+      const newItems = removeByMatchId(gameDetails.match_id, oldItems);
+      this.$store.dispatch('setFavoriteGames', newItems);
+    },
+    addFavorite(match) {
+      const favActive = this.$refs[`active-${match.match_id}`][0];
+      const favInactive = this.$refs[`inactive-${match.match_id}`][0];
+      favActive.classList.add('show');
+      favInactive.classList.add('hide');
+
+      favActive.classList.remove('hide');
+      favInactive.classList.remove('show');
+    },
+    removeFavorite(match) {
+      const favActive = this.$refs[`active-${match.match_id}`][0];
+      const favInactive = this.$refs[`inactive-${match.match_id}`][0];
+      favActive.classList.add('hide');
+      favInactive.classList.add('show');
+
+      favActive.classList.remove('show');
+      favInactive.classList.remove('hide');
     },
   },
 };
 </script>
 
 <style scoped>
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
 .single-game-card {
     display: block;
     float: left;
