@@ -7,7 +7,6 @@
         id="sticky"
       >
         <Days v-if="$route.path !== '/live'" />
-        <ListOfSports />
       </div>
 
       <DesktopSportList />
