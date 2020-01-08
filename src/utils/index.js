@@ -204,12 +204,10 @@ export const addFavorites = (gameArray, favoritesArray) => {
   return gameArray;
 };
 
-// export const addFavoriteKey = (matchId, currentGameArray) => {
-//   for (let i = 0; i < currentGameArray.length; i++) {
-//     if (currentGameArray[i].match_id === matchId) {
-//       currentGameArray[i].favorited = true;
-//     }
-//   }
 
-//   return currentGameArray;
-// };
+export const filterByFavorites = gameArray => {
+  const newGameArray = gameArray.filter((el) => el.favorited === true);
+  console.log('newGameArray=====>', newGameArray);
+  return newGameArray;
+};
+

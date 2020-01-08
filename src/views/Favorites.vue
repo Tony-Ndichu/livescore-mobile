@@ -13,7 +13,7 @@
 import Banner from '../components/Banner.vue';
 import SideMenu from '../components/SideMenu.vue';
 import Games from '../components/Games.vue';
-import { groupByTournament } from '../utils';
+import { groupByTournament, filterByFavorites } from '../utils';
 import ListOfSports from '../components/ListOfSports.vue';
 
 export default {
@@ -27,20 +27,44 @@ export default {
   data: () => ({
     arrayOfFavoriteGames: [],
   }),
-  mounted() {
-    // const favoriteGames = JSON.parse(localStorage.getItem('favoriteGamesArray'));
-    // this.arrayOfFavoriteGames = favoriteGames;
+  computed: {
+    myFetchedGames() {
+      return this.$store.getters.getGamesForSingleSport;
+    },
+  },
+  watch: {
+    myFetchedGames(newValue) {
+      const filteredByFavorites = filterByFavorites(newValue);
+      const groupedByTournament = groupByTournament(filteredByFavorites);
+      const arrayOfGamesPerSport = [];
 
-    const groupedByTournament = groupByTournament(favoriteGames);
-    const arrayOfGamesPerSport = [];
-
-    Object.keys(groupedByTournament).forEach((key) => {
-      arrayOfGamesPerSport.push({
-        nameOfTournament: key,
-        gamesInTournament: groupedByTournament[key],
+      Object.keys(groupedByTournament).forEach((key) => {
+        const value = groupedByTournament[key];
+        arrayOfGamesPerSport.push({
+          nameOfTournament: key,
+          gamesInTournament: value,
+        });
+        this.arrayOfFavoriteGames = arrayOfGamesPerSport;
       });
-      this.arrayOfFavoriteGames = arrayOfGamesPerSport;
-    });
+    },
+  },
+  mounted() {
+    this.$store.dispatch('getGamesForSingleSport');
+    this.polling = setInterval(() => this.$store.dispatch('getGamesForSingleSport'), 10000);
+
+    const top = document.getElementById('sticky').offsetTop;
+
+    window.onscroll = () => {
+      const y = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+      if (y >= top) {
+        sticky.className = 'stick';
+      } else {
+        sticky.className = '';
+      }
+    };
+  },
+  destroyed() {
+    clearInterval(this.polling);
   },
 };
 </script>
