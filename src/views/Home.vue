@@ -78,8 +78,6 @@ export default {
     noGamesAvailable(newValue) {
     },
     myFetchedGames(newValue) {
-      const addedFavoritedKey = addFavorites(this.myFetchedGames, this.myFavoriteGames);
-
       const groupedByTournament = groupByTournament(newValue);
       const arrayOfGamesPerSport = [];
 
@@ -92,8 +90,7 @@ export default {
         this.arrayOfGamesPerSport = arrayOfGamesPerSport;
       });
     },
-    myFavoriteGames(newValue) {
-    },
+
   },
   created() {
     if (this.$route.path === '/live') {
