@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const apiUrl = 'http://35.210.229.131:9004/api';
 
 export const addLeadingZero = (number) => {
@@ -59,7 +61,7 @@ export const addIcon = (sportTitle) => {
       iconUrl = 'https://www.betika.com/lite/img/sport/soccer.png';
       break;
     case 'Badminton':
-      iconUrl = 'https://www.betika.com/lite//img/sport/badminton.png';
+      iconUrl = 'https://www.betika.com/lite/img/sport/snooker.png';
       break;
     case 'Beach Volley':
       iconUrl = 'https://www.betika.com/lite/img/sport/volleyball.png';
@@ -95,7 +97,6 @@ export const groupByTournamentName = (games) => {
     r['0'] = ['All'];
     return r;
   }, Object.create(null));
-  console.log('groupedByTournament====>', result);
   return result;
 };
 
@@ -106,7 +107,6 @@ export const groupByTournamentId = (games) => {
     r['0'] = ['All'];
     return r;
   }, Object.create(null));
-  console.log('groupedByTournament====>', result);
   return result;
 };
 
@@ -118,7 +118,6 @@ export const groupByCategory = (games) => {
     r['0'] = ['All'];
     return r;
   }, Object.create(null));
-  console.log('groupedByCategory====>', result);
   return result;
 };
 
@@ -191,4 +190,49 @@ export const filterByMatchId = (matchId, gameArray) => {
 export const removeByMatchId = (matchId, oldArray) => {
   const newGameArray = oldArray.filter((el) => el.match_id != matchId);
   return newGameArray;
+};
+
+export const addFavorites = (gameArray, favoritesArray) => {
+  console.log('game Array====>', gameArray);
+  console.log('favoritesArray=====>', favoritesArray);
+
+  const presents = _.intersectionWith(gameArray, favoritesArray, _.isEqual);
+  // const dif = _.differenceWith(gameArray, favoritesArray, _.isEqual);
+
+  // console.log('presents====>', presents);
+  // presents.map((value, index) => {
+  // console.log('present======>', value);
+  // let obj = gameArray.find(o => o.match_id === value.matchId);
+
+  console.log('presents========>', presents);
+
+  presents.map((value, index) => {
+    gameArray.find((o, i) => {
+      if (o.match_id == value.match_id) {
+        console.log('o.match_id===>', o.match_id);
+        console.log('value.match_id====>', value.match_id);
+        console.log('gameArray[i]=====>', gameArray[i]);
+        gameArray[i].favorited = true;
+      }
+    });
+  });
+
+  // for (x = 0; x < presents.length; x++){
+
+  // }
+
+
+  console.log('favedddd====>', gameArray);
+
+  return gameArray;
+};
+
+export const addFavoriteKey = (matchId, currentGameArray) => {
+  for (let i = 0; i < currentGameArray.length; i++) {
+    if (currentGameArray[i].match_id === matchId) {
+      currentGameArray[i].favorited = true;
+    }
+  }
+
+  return currentGameArray;
 };

@@ -3,17 +3,36 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import VuexPersistence from 'vuex-persist';
 import {
-  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName, groupByTournamentId,
+  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName, groupByTournamentId, addFavoriteKey,
 } from '../utils';
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
+  reducer: (state) => ({
+    sports: state.sports,
+    currentSportId: state.currentSportId,
+    currentSportName: state.currentSportName,
+    gamesForSingleSport: state.gamesForSingleSport,
+    categoriesForSingleSport: state.categoriesForSingleSport,
+    noGamesAvailable: state.noGamesAvailable,
+    currentDate: state.currentDate,
+    live: state.live,
+    loading: state.loading,
+    filteringByCategoryId: state.filteringByCategoryId,
+    filteringByTournamentId: state.filteringByTournamentId,
+    categoryId: state.categoryId,
+    tournamentId: state.tournamentId,
+    calendar: state.calendar,
+    tournamentNamesForSingleSport: state.tournamentNamesForSingleSport,
+    singleMatchDetails: state.singleMatchDetails,
+    favoriteGames: state.favoriteGames,
+  }),
 });
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // plugins: [vuexLocal.plugin],
+  plugins: [vuexLocal.plugin],
   state: {
     sports: [], // controls the list of sports displayed
     currentSportId: 1, // controls the filtering of the matches
@@ -34,6 +53,7 @@ export default new Vuex.Store({
     calendar: false, // used to show or hide the calendar
     tournamentNamesForSingleSport: [], // controls the tournament Names shown on the side menu per sport
     singleMatchDetails: [],
+    favoriteGames: [],
   },
   getters: {
     getSports: (state) => state.sports,
@@ -55,6 +75,7 @@ export default new Vuex.Store({
     getSingleMatchDetails: (state) => state.singleMatchDetails,
     getFilteringByCategoryIdState: (state) => state.filteringByCategoryId,
     getFilteringByTournamentIdState: (state) => state.filteringByTournamentId,
+    getFavoriteGames: (state) => state.favoriteGames,
   },
   mutations: {
     setSports(state, sports) {
@@ -78,6 +99,9 @@ export default new Vuex.Store({
     },
     setLoading(state, payload) {
       state.loading = payload;
+    },
+    closeSideMenu(state) {
+      state.sideMenu = false;
     },
     toggleSideMenu(state) {
       state.sideMenu = !state.sideMenu;
@@ -113,6 +137,9 @@ export default new Vuex.Store({
     setSingleMatchDetails(state, payload) {
       state.singleMatchDetails = payload;
     },
+    setFavoriteGames(state, payload) {
+      state.favoriteGames = payload;
+    },
   },
   actions: {
     getSports: async ({ commit }) => {
@@ -128,7 +155,6 @@ export default new Vuex.Store({
         url = `${apiUrl}/v2/${state.currentSportId}/${state.currentDate}?page=1`;
       }
       const games = await axios.get(url);
-      console.log('games====>', games.data.data);
 
       if (games.data.data === undefined || games.data.data.length === 0) {
         commit('setGamesForSingleSport', []);
@@ -195,13 +221,10 @@ export default new Vuex.Store({
     },
     getCategoriesForSingleSport: ({ commit, state }) => {
       if (!state.alreadyFetchedCategories) {
-        console.log('nope');
         commit('setCategoriesForSingleSport', groupByCategory(state.gamesForSingleSport));
       }
-
       commit('alreadyFetchedCategories', true);
     },
-
     setTournamentNamesForSingleSport: ({ commit, state }) => {
       if (!state.alreadyFetchedTournamentNames) {
         commit('setTournamentNamesForSingleSport', groupByTournamentId(state.gamesForSingleSport));
@@ -244,8 +267,23 @@ export default new Vuex.Store({
       commit('filteringByTournamentId', payload);
     },
     toggleCalendar: ({ commit }) => {
-      console.log('toggling calendar==========>');
       commit('toggleCalendar');
     },
-  },
+    setFavoriteGames: ({ commit }, payload) => {
+      commit('setFavoriteGames', payload);
+    },
+    closeSideMenu: ({ commit }) => {
+      commit('closeSideMenu');
+    },
+    setAlreadyFetchedCategories: ({ commit }, payload) => {
+      commit('alreadyFetchedCategories', payload);
+    },
+    setAlreadyFetchedTournamentNames: ({ commit }, payload) => {
+      commit('alreadyFetchedTournamentNames', payload);
+    },
+    addFavoriteKey: ({ commit, state }, payload) => {
+      const newArray = addFavoriteKey(payload, state.gamesForSingleSport);
+      commit('addFavoriteKey', newArray);
+    },
+  }
 });

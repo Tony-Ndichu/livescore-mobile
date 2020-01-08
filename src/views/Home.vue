@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { groupByTournament } from '../utils';
+import { groupByTournament, addFavorites } from '../utils';
 import Banner from '../components/Banner.vue';
 import Days from '../components/Days.vue';
 import ListOfSports from '../components/ListOfSports.vue';
@@ -68,6 +68,9 @@ export default {
     myFetchedGames() {
       return this.$store.getters.getGamesForSingleSport;
     },
+    myFavoriteGames() {
+      return this.$store.getters.getFavoriteGames;
+    },
   },
   watch: {
     loading(newValue) {
@@ -75,22 +78,38 @@ export default {
     noGamesAvailable(newValue) {
     },
     myFetchedGames(newValue) {
-      const groupedByTournament = groupByTournament(newValue);
+      const addedFavoritedKey = addFavorites(newValue, this.myFavoriteGames);
+      console.log('addedFavoritedKey==========>', addedFavoritedKey);
+      const groupedByTournament = groupByTournament(addedFavoritedKey);
       const arrayOfGamesPerSport = [];
 
       Object.keys(groupedByTournament).forEach((key) => {
+        const value = groupedByTournament[key];
+        // console.log(`key=======>${key}, value===>${value[0]}`);
+
         arrayOfGamesPerSport.push({
           nameOfTournament: key,
-          gamesInTournament: groupedByTournament[key],
+          gamesInTournament: value,
         });
         this.arrayOfGamesPerSport = arrayOfGamesPerSport;
       });
+    },
+    myFavoriteGames(newValue) {
+      console.log('new faves=====>', newValue);
     },
   },
   created() {
     if (this.$route.path === '/live') {
       this.$store.dispatch('setLiveGames', true);
     }
+
+    // window.addEventListener('beforeunload', (event) => {
+    //   event.returnValue = 'Sure you want to leave?';
+    //   console.log('reloading');
+    //   this.$store.dispatch('closeSideMenu');
+    //   this.$$store.dispatch('setAlreadyFetchedCategories', false);
+    //   this.$store.dispatch('setAlreadyFetchedTournamentNames', false);
+    // });
   },
   mounted() {
     // window.addEventListener('scroll', this.handleScroll(event));

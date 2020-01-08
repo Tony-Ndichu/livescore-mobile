@@ -82,8 +82,8 @@ export default {
   },
   mounted() {
     // this.$store.dispatch('setCategoryId', 0);
-    console.log('this.$route=====>', this.$route.name);
-    console.log('categoriesForSingleSport====>', this.categoriesForSingleSport);
+    // console.log('this.$route=====>', this.$route.name);
+    // console.log('categoriesForSingleSport====>', this.categoriesForSingleSport);
   },
   methods: {
     findAlphaCode(countryName) {
@@ -94,7 +94,6 @@ export default {
     },
     sortByCategory(categoryBetradarId) {
       // if the categoryId is 0 (default for "all"), simply fetch all games for the sport rather than filter by category
-
       if (this.$route.name !== 'home' || this.$route.name !== 'live') {
         this.$router.push('/');
       }
