@@ -28,7 +28,7 @@ export default {
     arrayOfFavoriteGames: [],
   }),
   mounted() {
-    const favoriteGames = JSON.parse(localStorage.getItem('favoriteGamesArray'));
+    // const favoriteGames = JSON.parse(localStorage.getItem('favoriteGamesArray'));
     // this.arrayOfFavoriteGames = favoriteGames;
 
     const groupedByTournament = groupByTournament(favoriteGames);

@@ -193,46 +193,23 @@ export const removeByMatchId = (matchId, oldArray) => {
 };
 
 export const addFavorites = (gameArray, favoritesArray) => {
-  console.log('game Array====>', gameArray);
-  console.log('favoritesArray=====>', favoritesArray);
-
   const presents = _.intersectionWith(gameArray, favoritesArray, _.isEqual);
-  // const dif = _.differenceWith(gameArray, favoritesArray, _.isEqual);
-
-  // console.log('presents====>', presents);
-  // presents.map((value, index) => {
-  // console.log('present======>', value);
-  // let obj = gameArray.find(o => o.match_id === value.matchId);
-
-  console.log('presents========>', presents);
-
   presents.map((value, index) => {
     gameArray.find((o, i) => {
       if (o.match_id == value.match_id) {
-        console.log('o.match_id===>', o.match_id);
-        console.log('value.match_id====>', value.match_id);
-        console.log('gameArray[i]=====>', gameArray[i]);
         gameArray[i].favorited = true;
       }
     });
   });
-
-  // for (x = 0; x < presents.length; x++){
-
-  // }
-
-
-  console.log('favedddd====>', gameArray);
-
   return gameArray;
 };
 
-export const addFavoriteKey = (matchId, currentGameArray) => {
-  for (let i = 0; i < currentGameArray.length; i++) {
-    if (currentGameArray[i].match_id === matchId) {
-      currentGameArray[i].favorited = true;
-    }
-  }
+// export const addFavoriteKey = (matchId, currentGameArray) => {
+//   for (let i = 0; i < currentGameArray.length; i++) {
+//     if (currentGameArray[i].match_id === matchId) {
+//       currentGameArray[i].favorited = true;
+//     }
+//   }
 
-  return currentGameArray;
-};
+//   return currentGameArray;
+// };

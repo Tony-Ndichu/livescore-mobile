@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import VuexPersistence from 'vuex-persist';
 import {
-  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName, groupByTournamentId, addFavoriteKey,
+  apiUrl, addSportIcons, groupByCategory, filterByCategoryId, filterByTournamentId, groupByTournamentName, groupByTournamentId, addFavorites,
 } from '../utils';
 
 const vuexLocal = new VuexPersistence({
@@ -32,7 +32,7 @@ const vuexLocal = new VuexPersistence({
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [vuexLocal.plugin],
+  // plugins: [vuexLocal.plugin],
   state: {
     sports: [], // controls the list of sports displayed
     currentSportId: 1, // controls the filtering of the matches
@@ -107,7 +107,6 @@ export default new Vuex.Store({
       state.sideMenu = !state.sideMenu;
     },
     setCategoriesForSingleSport(state, categoriesForSingleSport) {
-      console.log('categoriesForSingleSport===>', categoriesForSingleSport);
       state.categoriesForSingleSport = categoriesForSingleSport;
     },
     filteringByCategoryId(state, payload) {
@@ -161,12 +160,15 @@ export default new Vuex.Store({
         commit('setNoGamesAvailable', true);
       } else if (state.filteringByCategoryId) {
         // check if user is filtering by category before using the category id to set games for a single sport
-        commit('setGamesForSingleSport', filterByCategoryId(state.categoryId, games.data.data));
+        const filteredByCategoryId = filterByCategoryId(state.categoryId, games.data.data);
+
+        commit('setGamesForSingleSport', addFavorites(filteredByCategoryId, state.favoriteGames));
       } else if (state.filteringByTournamentId) {
         // check if user is filtering by tournament before using the tournament id to set games for a single sport
-        commit('setGamesForSingleSport', filterByTournamentId(state.tournamentId, games.data.data));
+        const filteredByTournament = filterByTournamentId(state.tournamentId, games.data.data);
+        commit('setGamesForSingleSport', addFavorites(filteredByTournament, state.favoriteGames));
       } else {
-        commit('setGamesForSingleSport', games.data.data);
+        commit('setGamesForSingleSport', addFavorites(games.data.data, state.favoriteGames));
         commit('setNoGamesAvailable', false);
       }
       commit('setLoading', false);
@@ -281,9 +283,9 @@ export default new Vuex.Store({
     setAlreadyFetchedTournamentNames: ({ commit }, payload) => {
       commit('alreadyFetchedTournamentNames', payload);
     },
-    addFavoriteKey: ({ commit, state }, payload) => {
-      const newArray = addFavoriteKey(payload, state.gamesForSingleSport);
-      commit('addFavoriteKey', newArray);
-    },
+    // addFavoriteKey: ({ commit, state }, payload) => {
+    //   const newArray = addFavoriteKey(payload, state.gamesForSingleSport);
+    //   commit('addFavoriteKey', newArray);
+    // },
   }
 });

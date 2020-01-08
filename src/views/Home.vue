@@ -78,15 +78,13 @@ export default {
     noGamesAvailable(newValue) {
     },
     myFetchedGames(newValue) {
-      const addedFavoritedKey = addFavorites(newValue, this.myFavoriteGames);
-      console.log('addedFavoritedKey==========>', addedFavoritedKey);
-      const groupedByTournament = groupByTournament(addedFavoritedKey);
+      const addedFavoritedKey = addFavorites(this.myFetchedGames, this.myFavoriteGames);
+
+      const groupedByTournament = groupByTournament(newValue);
       const arrayOfGamesPerSport = [];
 
       Object.keys(groupedByTournament).forEach((key) => {
         const value = groupedByTournament[key];
-        // console.log(`key=======>${key}, value===>${value[0]}`);
-
         arrayOfGamesPerSport.push({
           nameOfTournament: key,
           gamesInTournament: value,
@@ -95,25 +93,14 @@ export default {
       });
     },
     myFavoriteGames(newValue) {
-      console.log('new faves=====>', newValue);
     },
   },
   created() {
     if (this.$route.path === '/live') {
       this.$store.dispatch('setLiveGames', true);
     }
-
-    // window.addEventListener('beforeunload', (event) => {
-    //   event.returnValue = 'Sure you want to leave?';
-    //   console.log('reloading');
-    //   this.$store.dispatch('closeSideMenu');
-    //   this.$$store.dispatch('setAlreadyFetchedCategories', false);
-    //   this.$store.dispatch('setAlreadyFetchedTournamentNames', false);
-    // });
   },
   mounted() {
-    // window.addEventListener('scroll', this.handleScroll(event));
-    // this.$store.dispatch('setCategoryId', 0);
     this.$store.dispatch('getGamesForSingleSport');
     this.polling = setInterval(() => this.$store.dispatch('getGamesForSingleSport'), 10000);
 
@@ -130,7 +117,6 @@ export default {
   },
   destroyed() {
     clearInterval(this.polling);
-    // window.removeEventListener('scroll', this.handleScroll(event));
   },
   methods: {
     getDistance() {
