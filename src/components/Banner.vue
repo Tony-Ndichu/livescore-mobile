@@ -26,6 +26,9 @@
         <span>Play Responsibly</span>
       </div>
     </div> -->
+    <div class="dropdown-sports">
+      <Menu />
+    </div>
 
     <div
       class="menu-icon"
@@ -38,9 +41,13 @@
 
 <script>
 import over18Logo from '../assets/images/agelimit.svg';
+import Menu from './Menu.vue';
 
 export default {
   name: 'Banner',
+  components: {
+    Menu,
+  },
   data: () => ({
     ageLimitImage: over18Logo,
   }),
@@ -90,6 +97,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
 }
 
 .header a {

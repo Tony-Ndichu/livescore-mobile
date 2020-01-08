@@ -107,6 +107,7 @@ white-space: nowrap;
 overflow-x: auto;
 -ms-overflow-style: none;  /* Internet Explorer 10+ */
 scrollbar-width: none;
+box-shadow: 0 3px 6px rgba(0,0,0,.16), 0 3px 6px rgba(0,0,0,.23);
 }
 
 .active {

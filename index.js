@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faAngleRight, faHome, faSearch, faBars, faTimes, faFilter, faGlobeAfrica, faCalendarAlt, faFutbol, faStar,
+  faAngleRight, faHome, faSearch, faBars, faTimes, faFilter, faGlobeAfrica, faCalendarAlt, faFutbol, faStar, faCaretDown, faCaretUp,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   FontAwesomeIcon, FontAwesomeLayers,
@@ -18,7 +18,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
 
-library.add(faAngleRight, faHome, faSearch, faBars, faTimes, faFilter, faGlobeAfrica, faCalendarAlt, faFutbol, faStar);
+library.add(faAngleRight, faHome, faSearch, faBars, faTimes, faFilter, faGlobeAfrica, faCalendarAlt, faFutbol, faStar, faCaretDown, faCaretUp);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('font-awesome-layers', FontAwesomeLayers);

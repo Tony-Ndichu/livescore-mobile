@@ -16,55 +16,55 @@ export const addIcon = (sportTitle) => {
   let iconUrl;
   switch (sportTitle) {
     case 'Soccer':
-      iconUrl = 'https://www.betika.com/lite/img/sport/soccer.png';
+      iconUrl = 'mdi-soccer';
       break;
     case 'Basketball':
-      iconUrl = 'https://www.betika.com/lite//img/sport/basketball.png';
+      iconUrl = 'mdi-basketball';
       break;
     case 'Baseball':
-      iconUrl = 'https://www.betika.com/lite//img/sport/baseball.png';
+      iconUrl = 'mdi-baseball';
       break;
     case 'Ice Hockey':
-      iconUrl = 'https://www.betika.com/lite/img/sport/icehockey.png';
+      iconUrl = 'mdi-hockey-sticks';
       break;
     case 'Tennis':
-      iconUrl = 'https://www.betika.com/lite//img/sport/tennis.png';
+      iconUrl = 'mdi-tennis';
       break;
     case 'Handball':
-      iconUrl = 'https://www.betika.com/lite/img/sport/handball.png';
+      iconUrl = 'mdi-handball';
       break;
     case 'Floorball':
-      iconUrl = 'https://www.betika.com/lite//img/sport/tennis.png';
+      iconUrl = 'mdi-hockey-sticks';
       break;
     case 'Rugby':
-      iconUrl = 'https://www.betika.com/lite//img/sport/rugby.png';
+      iconUrl = 'mdi-rugby';
       break;
     case 'Bandy':
-      iconUrl = 'https://www.betika.com/lite//img/sport/baseball.png';
+      iconUrl = 'mdi-hockey-puck';
       break;
     case 'Football':
-      iconUrl = 'https://www.betika.com/lite//img/sport/rugby.png';
+      iconUrl = 'mdi-football-helmet';
       break;
     case 'Snooker':
-      iconUrl = 'https://www.betika.com/lite//img/sport/snooker.png';
+      iconUrl = 'mdi-billiards-rack';
       break;
     case 'Table tennis':
-      iconUrl = 'https://www.betika.com/lite//img/sport/tennis.png';
+      iconUrl = 'mdi-table-tennis';
       break;
     case 'Darts':
-      iconUrl = 'https://www.betika.com/lite//img/sport/darts.png';
+      iconUrl = 'mdi-bullseye-arrow';
       break;
     case 'Volleyball':
-      iconUrl = 'https://www.betika.com/lite/img/sport/volleyball.png';
+      iconUrl = 'mdi-volleyball';
       break;
     case 'Futsal':
-      iconUrl = 'https://www.betika.com/lite/img/sport/soccer.png';
+      iconUrl = 'mdi-soccer';
       break;
     case 'Badminton':
-      iconUrl = 'https://www.betika.com/lite/img/sport/snooker.png';
+      iconUrl = 'mdi-badminton';
       break;
     case 'Beach Volley':
-      iconUrl = 'https://www.betika.com/lite/img/sport/volleyball.png';
+      iconUrl = 'mdi-volleyball';
       break;
     default:
   }
@@ -205,9 +205,8 @@ export const addFavorites = (gameArray, favoritesArray) => {
 };
 
 
-export const filterByFavorites = gameArray => {
+export const filterByFavorites = (gameArray) => {
   const newGameArray = gameArray.filter((el) => el.favorited === true);
   console.log('newGameArray=====>', newGameArray);
   return newGameArray;
 };
-

@@ -42,6 +42,7 @@ export default {
     width: 100%;
     background-color: white;
     padding-bottom: 300px;
+    margin-top: 5%;
 }
 
 .single-tournament-card {
