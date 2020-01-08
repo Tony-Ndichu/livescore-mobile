@@ -29,7 +29,7 @@
             {{ "team_2_score" in game ? game.team_2_score : '?' }}
           </div>
           <div :class="game.team_1_score < game.team_2_score ? 'team-name bold' : 'team-name'">
-            {{ game.team_2_name }}
+            {{ game.team_2_name }} {{ game.favorited }}
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
         </div>
         <div
           :ref="`active-${game.match_id}`"
-          :class="game.favorited ? 'show' : 'hide'"
+          :class="!('favorited' in game) ? 'hide' : 'show'"
           @click="removeFavoriteGame(game)"
         >
           <i
@@ -81,11 +81,18 @@ export default {
       let oldItems = [];
       oldItems = this.favoriteGames;
 
-      const checkIfMatchIsAlreadyFavorited = filterByMatchId(gameDetails.match_id, oldItems);
+      if (oldItems.length != 0) {
+        const checkIfMatchIsAlreadyFavorited = filterByMatchId(gameDetails.match_id, oldItems);
 
-      if (checkIfMatchIsAlreadyFavorited == 0) {
+        if (checkIfMatchIsAlreadyFavorited == 0) {
+          oldItems.push(gameDetails);
+          this.$store.dispatch('setFavoriteGames', oldItems);
+          this.$store.dispatch('getGamesForSingleSport');
+        }
+      } else {
         oldItems.push(gameDetails);
         this.$store.dispatch('setFavoriteGames', oldItems);
+        this.$store.dispatch('getGamesForSingleSport');
       }
     },
     removeFavoriteGame(gameDetails) {
@@ -94,6 +101,7 @@ export default {
       oldItems = this.favoriteGames;
       const newItems = removeByMatchId(gameDetails.match_id, oldItems);
       this.$store.dispatch('setFavoriteGames', newItems);
+      this.$store.dispatch('getGamesForSingleSport');
     },
     addFavorite(match) {
       const favActive = this.$refs[`active-${match.match_id}`][0];

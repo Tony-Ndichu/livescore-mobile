@@ -80,11 +80,6 @@ export default {
       return this.$store.getters.getCategoryId;
     },
   },
-  mounted() {
-    // this.$store.dispatch('setCategoryId', 0);
-    // console.log('this.$route=====>', this.$route.name);
-    // console.log('categoriesForSingleSport====>', this.categoriesForSingleSport);
-  },
   methods: {
     findAlphaCode(countryName) {
       if (getCode(countryName) == undefined) {
