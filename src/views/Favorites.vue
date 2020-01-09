@@ -1,11 +1,16 @@
 <template>
   <div>
-    <Banner />
-    <ListOfSports />
+    <div
+      v-if="$route.path !== '/match'"
+      id="sticky"
+    >
+      <Banner />
+    </div>
     <SideMenu />
     <Games
       :array-of-games-per-sport="arrayOfFavoriteGames"
     />
+    <BottomNav />
   </div>
 </template>
 
@@ -14,7 +19,7 @@ import Banner from '../components/Banner.vue';
 import SideMenu from '../components/SideMenu.vue';
 import Games from '../components/Games.vue';
 import { groupByTournament, filterByFavorites } from '../utils';
-import ListOfSports from '../components/ListOfSports.vue';
+import BottomNav from '../components/BottomNav.vue';
 
 export default {
   name: 'Favorites',
@@ -22,7 +27,7 @@ export default {
     Banner,
     SideMenu,
     Games,
-    ListOfSports,
+    BottomNav,
   },
   data: () => ({
     arrayOfFavoriteGames: [],

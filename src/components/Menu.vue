@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     setCurrentSport(betradarId, name) {
+      setTimeout(() => { this.dialog = false; }, 300);
       this.$store.dispatch('setCurrentSport', { betradarId, name });
     },
   },

@@ -50,7 +50,7 @@
       </div>
     </div>
     <div
-      class="nav-item"
+           :class="$route.path === '/favorites' ? 'nav-item active' : 'nav-item'"
     >
       <div
         class="nav-item-icon"

@@ -32,7 +32,7 @@ const vuexLocal = new VuexPersistence({
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  // plugins: [vuexLocal.plugin],
+  plugins: [vuexLocal.plugin],
   state: {
     sports: [], // controls the list of sports displayed
     currentSportId: 1, // controls the filtering of the matches

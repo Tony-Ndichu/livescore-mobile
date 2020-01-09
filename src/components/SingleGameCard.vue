@@ -21,7 +21,7 @@
             {{ "team_1_score" in game ? game.team_1_score : '?' }}
           </div>
           <div :class="game.team_1_score > game.team_2_score ? 'team-name bold' : 'team-name'">
-            {{ game.team_1_name }} {{ game.match_id }}
+            {{ game.team_1_name }}
           </div>
         </div>
         <div class="team-card">
@@ -29,7 +29,7 @@
             {{ "team_2_score" in game ? game.team_2_score : '?' }}
           </div>
           <div :class="game.team_1_score < game.team_2_score ? 'team-name bold' : 'team-name'">
-            {{ game.team_2_name }} {{ game.favorited }}
+            {{ game.team_2_name }}
           </div>
         </div>
       </div>
