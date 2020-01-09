@@ -30,10 +30,9 @@
 </template>
 
 <script>
-import { groupByTournament, addFavorites } from '../utils';
+import { groupByTournament } from '../utils';
 import Banner from '../components/Banner.vue';
 import Days from '../components/Days.vue';
-import ListOfSports from '../components/ListOfSports.vue';
 import Games from '../components/Games.vue';
 import BottomNav from '../components/BottomNav.vue';
 import SideMenu from '../components/SideMenu.vue';
@@ -46,7 +45,6 @@ export default {
   components: {
     Banner,
     Days,
-    ListOfSports,
     Games,
     BottomNav,
     SideMenu,
